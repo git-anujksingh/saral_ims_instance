@@ -1,0 +1,11 @@
+{
+  "name": "saral_ims_instance",
+  "version": "1.0.0",
+  "description": "Saral Inventory Management System Server",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Anuj Kumar Singh",
+  "license": "ISC"
+}
