@@ -11,6 +11,9 @@ const loginRoute = require("./src/routes/login")
 
 
 app.use('/login', loginRoute);
+app.get('*', (req,res)=>{
+  res.redirect('/login')  
+})
 
 const PORT = process.env.PORT || 5000;
 //app.set('PORT', process.env.PORT);
