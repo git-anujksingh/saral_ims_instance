@@ -13,7 +13,6 @@ exports.getLogin = async (req, res) => {
     let header = req.headers;
     let dbResource = await dbData.getDBConnection();
     let collectionList = await dbResource.listCollections().toArray();
-    //console.log("collection_name : ", collectionList);
     let isCollectExist = common.isCollectionExist(collectionList, header.collection);
     if (isCollectExist) {
         let result = await dbResource.collection(header.collection).find({}).toArray();
@@ -25,10 +24,10 @@ exports.getLogin = async (req, res) => {
                 //console.log("AAAAAAAAA", Date(new Date()('en', {timeZone: 'Asia/Calcutta'})));
                 response.data.token = generatedToken;
                     response.data = { ...x },
+                    delete response.data.password;
                     response.success = true,
                     response.status_code = 200,
                     response.message = "Login Success",
-
                     dbResource.collection(header.collection).updateOne({userName : x.userName}, {$set:{token : generatedToken, last_login : Date(new Date())}});
             }
         })
@@ -49,21 +48,13 @@ exports.isLogged = async (req, res) => {
     let header = req.headers;
     let dbResource = await dbData.getDBConnection();
     let collectionList = await dbResource.listCollections().toArray();
-    //console.log("collection_name : ", collectionList);
     let isCollectExist = common.isCollectionExist(collectionList, header.collection);
     if (isCollectExist) {
         let result = await dbResource.collection(header.collection).find({}).toArray();
         result.forEach(async (x) => {
-            if (x.access_token == header.token) {
-                const token_created_date = header.token_created;
-                // console.log("Date : ", date1); new Date();
-                // var date2 = new Date("Thu May 04 2023 23:35:25 GMT+0530");
-                // if (date1 > date2) {
-                //     console.log("Correct");
-                // } else {
-                //     console.log("Wrong")
-                // }
-                if (x.last_password_change < token_created_date) {
+            if (x.token == header.token) {
+                const token_created_date = new Date (x.token_created);
+                if((Date.parse(x.last_password_change) < Date.parse(token_created_date))){
                     response.data = { ...x },
                     response.success = true,
                     response.status_code = 200,
