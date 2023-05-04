@@ -24,11 +24,10 @@ exports.getLogin = async (req, res) => {
                 //console.log("AAAAAAAAA", Date(new Date()('en', {timeZone: 'Asia/Calcutta'})));
                 response.data.token = generatedToken;
                     response.data = { ...x },
-                    response.data.password;
+                    delete response.data.password;
                     response.success = true,
                     response.status_code = 200,
                     response.message = "Login Success",
-
                     dbResource.collection(header.collection).updateOne({userName : x.userName}, {$set:{token : generatedToken, last_login : Date(new Date())}});
             }
         })

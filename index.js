@@ -1,8 +1,9 @@
 require("dotenv").config();
 const express = require("express");
 const app = express();
-var cors = require('cors')
-app.use(cors())
+var cors = require('cors');
+process.env.TZ ="Asia/Calcutta"
+app.use(cors());
 const dbConfig = require("./src/config/dbConfig");
 app.locals.dbConfig = dbConfig;
 app.use(express.json());
