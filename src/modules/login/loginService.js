@@ -29,7 +29,7 @@ exports.getLogin = async (req, res) => {
                     response.status_code = 200,
                     response.message = "Login Success",
 
-                    dbResource.collection(header.collection).updateOne({userName : x.userName}, {$set:{token : generatedToken, last_login : Date(new Date().toLocaleString('en', {timeZone: 'Asia/Calcutta'}))}});
+                    dbResource.collection(header.collection).updateOne({userName : x.userName}, {$set:{token : generatedToken, last_login : Date(new Date())}});
             }
         })
     } else {
