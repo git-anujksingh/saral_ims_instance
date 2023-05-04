@@ -9,7 +9,7 @@ app.use(express.json());
 const loginRoute = require("./src/routes/login")
 
 
-app.use('/login', loginRoute);
+app.use('/authenticate', loginRoute);
 app.get('*', (req,res)=>{
   res.redirect('/login')  
 })
