@@ -3,3 +3,7 @@ const login = require("./loginService");
 exports.getLogin = async (req, res) => {
     await login.getLogin(req, res);
 };
+
+exports.isLogged = async (re,res) =>{
+    await login.isLogged(req, res);
+}
