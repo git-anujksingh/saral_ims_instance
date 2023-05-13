@@ -26,7 +26,7 @@ exports.getLogin = async (req, res) => {
                 response.success = true,
                 response.status_code = 200,
                 response.message = "Login Success",
-                dbResource.collection(header.collection).updateOne({ userName: x.userName }, { $set: { token: generatedToken, tokenExpiry: jwtDecode.iat, login_status: true, last_login: Date(new Date()) } });
+                dbResource.collection(header.collection).updateOne({ userName: x.userName }, { $set: { token: generatedToken, token_expiry: jwtDecode.iat, login_status: true, last_login: Date(new Date()) } });
             } else if (x.userName == body.userName && x.password == body.password && x.login_status == true  && !body?.userResponse) {
                     response.success = true,
                     response.status_code = 401,
