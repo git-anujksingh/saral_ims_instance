@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.post('', loginController.getLogin);
 
-router.post('/logged', loginController.isLogged);
+router.post('/isLogin', loginController.isLogged);
+
+router.post('/logout', loginController.logout);
 
 module.exports = router;
