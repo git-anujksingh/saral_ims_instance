@@ -19,13 +19,14 @@ exports.getLogin = async (req, res) => {
         result.forEach(async (x) => {
             if (x.userName == body.userName && x.password == body.password && x.login_status == false) {
                 let generatedToken = jwt.sign({ _id: x._id }, 'saral_lms');
+                let jwtDecode = jwt.verify(generatedToken, 'saral_lms');
                 response.data.token = generatedToken;
                 response.data[0] = { ...x },
                 delete response.data[0].password;
                 response.success = true,
                 response.status_code = 200,
                 response.message = "Login Success",
-                dbResource.collection(header.collection).updateOne({ userName: x.userName }, { $set: { token: generatedToken, login_status: true, last_login: Date(new Date()) } });
+                dbResource.collection(header.collection).updateOne({ userName: x.userName }, { $set: { token: generatedToken, tokenExpiry: jwtDecode.iat, login_status: true, last_login: Date(new Date()) } });
             } else if (x.userName == body.userName && x.password == body.password && x.login_status == true  && !body?.userResponse) {
                     response.success = true,
                     response.status_code = 401,
@@ -65,7 +66,7 @@ exports.isLogged = async (req, res) => {
         if (body.access_token) {
             let jwtDecode = jwt.verify(body.access_token, 'saral_lms');
             result.forEach(async (x) => {
-                if (x._id == jwtDecode._id) {
+                if (x._id == jwtDecode._id && x.token_expiry == jwtDecode.iat ) {
                     const token_created_date = new Date(x.token_created);
                     if ((Date.parse(x.last_password_change) < Date.parse(token_created_date))) {
                         response.data[0] = { ...x },
