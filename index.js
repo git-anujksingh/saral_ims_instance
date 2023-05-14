@@ -13,10 +13,7 @@ app.use(express.json());
 const loginRoute = require("./src/routes/login")
 
 
-app.use('/authenticate', loginRoute);
-app.get('*', (req,res)=>{
-  res.redirect('/login')  
-});
+app.use('', loginRoute);
 
 const PORT = process.env.PORT || 5000;
 //app.set('PORT', process.env.PORT);
