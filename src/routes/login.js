@@ -3,7 +3,7 @@ const loginController = require("../modules/login/loginController");
 const router = express.Router();
 
 
-router.post('login', loginController.getLogin);
+router.post('/authenticate', loginController.getLogin);
 
 router.post('/isLogin', loginController.isLogged);
 

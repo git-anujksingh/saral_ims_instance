@@ -13,7 +13,7 @@ app.use(express.json());
 const loginRoute = require("./src/routes/login")
 
 
-app.use('', loginRoute);
+app.use('/api', loginRoute);
 
 const PORT = process.env.PORT || 5000;
 //app.set('PORT', process.env.PORT);

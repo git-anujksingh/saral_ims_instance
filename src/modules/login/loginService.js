@@ -11,14 +11,12 @@ exports.getLogin = async (req, res) => {
         message: "Login Failed"
     };
     let header = req.headers;
-    res.setHeader('Content-Type', 'application/json');
     let dbResource = await dbData.getDBConnection();
     let collectionList = await dbResource.listCollections().toArray();
-    let isCollectExist = common.isCollectionExist(collectionList, header.collection);
+    let isCollectExist = common.isCollectionExist(collectionList, 'c_login');
     if (isCollectExist) {
-        let result = await dbResource.collection(header.collection).find({}).toArray();
+        let result = await dbResource.collection('c_login').find({}).toArray();
         for(let i= 0; i < result.length; i++){
-            console.log("ESPA ", result[0]);
             if (result[i].userName == body.userName && result[i].password == body.password && (result[i].login_status == false || body?.userResponse)) {
                 let generatedToken = jwt.sign({ _id: result[i]._id }, 'saral_lms');
                 let jwtDecode = jwt.verify(generatedToken, 'saral_lms');
@@ -32,8 +30,7 @@ exports.getLogin = async (req, res) => {
                 response.success = true,
                 response.status_code = 200,
                 response.message = "Login Success",
-                console.log("SLA", response.data[0]);
-                dbResource.collection(header.collection).updateOne({ userName: result[i].userName }, { $set: { token: generatedToken, token_expiry: jwtDecode.iat, login_status: true, last_login: Date(new Date()) } });
+                dbResource.collection('c_login').updateOne({ userName: result[i].userName }, { $set: { token: generatedToken, token_expiry: jwtDecode.iat, login_status: true, last_login: Date(new Date()) } });
                 
             } else if (result[i].userName == body.userName && result[i].password == body.password && result[i].login_status == true  && !body?.userResponse) {
                     response.success = true,
@@ -48,7 +45,7 @@ exports.getLogin = async (req, res) => {
             //     response.success = true,
             //     response.status_code = 200,
             //     response.message = "Login Success",
-            //     dbResource.collection(header.collection).updateOne({ userName: i.userName }, { $set: { token: generatedToken, login_status: true, last_login: Date(new Date()) } });
+            //     dbResource.collection('c_login').updateOne({ userName: i.userName }, { $set: { token: generatedToken, login_status: true, last_login: Date(new Date()) } });
             // }
         }
     } else {
@@ -69,9 +66,9 @@ exports.isLogged = async (req, res) => {
     let header = req.headers;
     let dbResource = await dbData.getDBConnection();
     let collectionList = await dbResource.listCollections().toArray();
-    let isCollectExist = common.isCollectionExist(collectionList, header.collection);
+    let isCollectExist = common.isCollectionExist(collectionList, 'c_login');
     if (isCollectExist) {
-        let result = await dbResource.collection(header.collection).find({}).toArray();
+        let result = await dbResource.collection('c_login').find({}).toArray();
         if (body.access_token) {
             let jwtDecode = jwt.verify(body.access_token, 'saral_lms');
             console.log(">>>>", jwtDecode.iat);
@@ -114,18 +111,17 @@ exports.isLogged = async (req, res) => {
             status_code: 500,
             message: "Failed to Logout. Try Again"
         };
-        let header = req.headers;
         let dbResource = await dbData.getDBConnection();
         let collectionList = await dbResource.listCollections().toArray();
-        let isCollectExist = common.isCollectionExist(collectionList, header.collection);
+        let isCollectExist = common.isCollectionExist(collectionList, 'c_login');
         if (isCollectExist) {
-            let result = await dbResource.collection(header.collection).find({}).toArray();
+            let result = await dbResource.collection('c_login').find({}).toArray();
             result.forEach(async (x) => {
                 if (x.userName == body.userId) {
                     response.success = true,
-                        response.status_code = 200,
-                        response.message = "Logout Success",
-                        dbResource.collection(header.collection).updateOne({ userName: x.userName }, { $set: { login_status: false } });
+                    response.status_code = 200,
+                    response.message = "Logout Success",
+                    dbResource.collection('c_login').updateOne({ userName: x.userName }, { $set: { login_status: false } });
                 }
             })
         } else {
