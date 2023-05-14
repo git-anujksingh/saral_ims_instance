@@ -11,3 +11,7 @@ exports.isLogged = async (req,res) =>{
 exports.logout = async (req,res) =>{
     await login.logout(req, res);
 }
+
+exports.render = async (req,res) =>{
+    await login.render(req, res);
+}

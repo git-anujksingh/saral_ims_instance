@@ -133,3 +133,30 @@ exports.isLogged = async (req, res) => {
         }
         res.send(response);
     }
+
+    exports.render = async (req, res) => {
+        let body = req.body;
+        let response = {
+            data: [],
+            success: false,
+            status_code: 500,
+            message: "Failed to Logout. Try Again"
+        };
+        let dbResource = await dbData.getDBConnection();
+        let collectionList = await dbResource.listCollections().toArray();
+        let isCollectExist = common.isCollectionExist(collectionList, 'c_login');
+        if (isCollectExist) {
+            let result = await dbResource.collection('c_login').find({}).toArray();
+            result.forEach(async (x) => {
+                if (x.userName == body.userId) {
+                    response.success = true,
+                    response.status_code = 200,
+                    response.message = "Render is Working"
+                }
+            })
+        } else {
+            response.message = "Collection not exist !",
+            response.status_code = 101
+        }
+        res.send(response);
+    }
