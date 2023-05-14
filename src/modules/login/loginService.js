@@ -11,6 +11,7 @@ exports.getLogin = async (req, res) => {
         message: "Login Failed"
     };
     let header = req.headers;
+    res.setHeader('Content-Type', 'application/json');
     let dbResource = await dbData.getDBConnection();
     let collectionList = await dbResource.listCollections().toArray();
     let isCollectExist = common.isCollectionExist(collectionList, header.collection);
