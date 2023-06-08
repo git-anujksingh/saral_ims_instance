@@ -11,9 +11,10 @@ const dbConfig = require("./src/config/dbConfig");
 app.locals.dbConfig = dbConfig;
 app.use(express.json());
 const loginRoute = require("./src/routes/login")
-
+const productCategoryRoute = require("./src/routes/productCategory")
 
 app.use('/api', loginRoute);
+app.use('/productCategory', productCategoryRoute);
 
 const PORT = process.env.PORT || 5000;
 //app.set('PORT', process.env.PORT);
