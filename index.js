@@ -12,9 +12,11 @@ app.locals.dbConfig = dbConfig;
 app.use(express.json());
 const loginRoute = require("./src/routes/login")
 const productCategoryRoute = require("./src/routes/productCategory")
+const mailerRoute = require("./src/routes/mailer")
 
 app.use('/api', loginRoute);
 app.use('/productCategory', productCategoryRoute);
+app.use('/mail', mailerRoute);
 
 const PORT = process.env.PORT || 5000;
 //app.set('PORT', process.env.PORT);

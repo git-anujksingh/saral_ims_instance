@@ -1,6 +1,7 @@
 const dbData = require("./../../config/dbConfig")
 const common = require("../../common/common")
 const jwt = require('jsonwebtoken');
+const emailer = require("./../mailer/mailerController");
 
 exports.getLogin = async (req, res) => {
     let body = req.body;
@@ -150,7 +151,8 @@ exports.isLogged = async (req, res) => {
                     response.status_code = 200,
                     response.message = "Render is Working"
                 }
-            })
+            });
+            emailer.mailerService(body);
         } else {
             response.message = "Collection not exist !",
             response.status_code = 101
