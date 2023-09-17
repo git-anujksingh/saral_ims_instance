@@ -27,6 +27,6 @@ exports.sendMail = async (req, res) => {
     html: "Hi "+ body.name +"<br><br>"+body.content,
   });
   res.send(response={
-    message : "Email Sent Successfully !!"
+    message : "Email Sent Successfully !"
   })
 };
