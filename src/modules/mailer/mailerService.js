@@ -4,7 +4,7 @@ exports.sendMail = async (req, res) => {
 
   let body = {
     name : req.body.name,
-    from : req.body.from,
+    from : "anujkumar.3855@gmail.com",
     to : req.body.to,
     subject : req.body.subject,
     content : req.body.content
@@ -21,10 +21,13 @@ exports.sendMail = async (req, res) => {
   });
 
   let info = await transporter.sendMail({
-    from: body.name +"<"+body.from+">",
+    from: "Anuj Kumar Singh"+"<"+body.from+">",
     to: body.to,
     subject: body.subject,
-    html: body.content,
+    html: "Hi "+ body.name +"\n"+body.content,
   });
   res.json(info);
+  res.send(response={
+    message : "Email Sent Successfully !!"
+  })
 };
