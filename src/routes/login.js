@@ -19,4 +19,6 @@ router.post('/list_knovator', loginController.listknovator);
 
 router.post('/detail_knovator', loginController.detailknovator);
 
+
+
 module.exports = router;
