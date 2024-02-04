@@ -15,3 +15,19 @@ exports.logout = async (req,res) =>{
 exports.render = async (req,res) =>{
     await login.render(req, res);
 }
+
+exports.registerknovator = async (req,res) =>{
+    await login.registerknovator(req, res);
+}
+
+exports.updateknovator = async (req,res) =>{
+    await login.updateknovator(req, res);
+}
+
+exports.listknovator = async (req,res) =>{
+    await login.listknovator(req, res);
+}
+
+exports.detailknovator = async (req,res) =>{
+    await login.detailknovator(req, res);
+}
