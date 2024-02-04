@@ -20,14 +20,14 @@ exports.registerknovator = async (req,res) =>{
     await login.registerknovator(req, res);
 }
 
+exports.getRecordKnovator = async (req,res) =>{
+    await login.getRecordKnovator(req, res);
+}
+
 exports.updateknovator = async (req,res) =>{
     await login.updateknovator(req, res);
 }
 
 exports.listknovator = async (req,res) =>{
     await login.listknovator(req, res);
-}
-
-exports.detailknovator = async (req,res) =>{
-    await login.detailknovator(req, res);
 }
