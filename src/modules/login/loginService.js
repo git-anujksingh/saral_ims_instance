@@ -216,4 +216,57 @@ exports.isLogged = async (req, res) => {
         }
         res.send(response);
     }
+
+    exports.getRecordKnovator = async (req, res) => {
+        let body = req.body;
+        let response = {
+            data: [],
+            success: false,
+            status_code: 500,
+            message: "Failed to Get Record. Try Again"
+        };
+        let dbResource = await dbData.getDBConnection();
+        let collectionList = await dbResource.listCollections().toArray();
+        let isCollectExist = common.isCollectionExist(collectionList, 'knovator');
+        if (isCollectExist) {
+            let result = await dbResource.collection('knovator').find({email: body.email}).toArray();
+            console.log(result);
+            if (result.length == 1) {
+                response.success = true,
+                response.status_code = 200,
+                response.message = "Record Fetched Successfully !",
+                response.data = result;
+            }
+        } else {
+            response.message = "Collection not exist !",
+            response.status_code = 101
+        }
+        res.send(response);
+    }
+
+    exports.updateknovator = async (req, res) => {
+        let body = req.body;
+        let response = {
+            data: [],
+            success: false,
+            status_code: 500,
+            message: "Failed to Update. Try Again"
+        };
+        let dbResource = await dbData.getDBConnection();
+        let collectionList = await dbResource.listCollections().toArray();
+        let isCollectExist = common.isCollectionExist(collectionList, 'knovator');
+        if (isCollectExist) {
+            let result = await dbResource.collection('knovator').find({email: body.email}).toArray();
+            if (result.length == 1) {
+                response.success = true,
+                response.status_code = 200,
+                response.message = "Record Updated Successfully !",
+                dbResource.collection('knovator').updateOne({ email: result[0].email }, { $set: { name: body.name, age: body.age, city: body.city, address: body.address, orgName: body.orgName } });
+            }
+        } else {
+            response.message = "Collection not exist !",
+            response.status_code = 101
+        }
+        res.send(response);
+    }
     

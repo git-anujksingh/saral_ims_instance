@@ -17,7 +17,7 @@ router.post('/update_knovator', loginController.updateknovator);
 
 router.post('/list_knovator', loginController.listknovator);
 
-router.post('/detail_knovator', loginController.detailknovator);
+router.post('/detail_knovator', loginController.getRecordKnovator);
 
 
 
