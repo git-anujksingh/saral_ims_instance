@@ -159,3 +159,61 @@ exports.isLogged = async (req, res) => {
         }
         res.send(response);
     }
+
+
+    // ----------knovator------------
+
+    exports.registerknovator = async (req, res) => {
+        let body = req.body;
+        let response = {
+            data: [],
+            success: false,
+            status_code: 500,
+            message: "Failed to Register. Try Again"
+        };
+        let dbResource = await dbData.getDBConnection();
+        let collectionList = await dbResource.listCollections().toArray();
+        let isCollectExist = common.isCollectionExist(collectionList, 'knovator');
+        if (isCollectExist) {
+            let sequence = await dbResource.collection('knovator').find({}).toArray();
+            let result = await dbResource.collection('knovator').find({email: body.email}).toArray();
+            if (result.length == 0) {
+                response.success = true,
+                response.status_code = 200,
+                response.message = "Transaction Success",
+                body.updatedDate = Date(new Date()),
+                body.referenceId = 'KNOVATOR_ID-C00'+ (sequence.length+1).toString(),
+                dbResource.collection('knovator').insertOne(body);
+            }
+        } else {
+            response.message = "Collection not exist !",
+            response.status_code = 101
+        }
+        res.send(response);
+    }
+    
+    exports.listknovator = async (req, res) => {
+        let response = {
+            data: [],
+            success: false,
+            status_code: 500,
+            message: "No Record Found."
+        };
+        let dbResource = await dbData.getDBConnection();
+        let collectionList = await dbResource.listCollections().toArray();
+        let isCollectExist = common.isCollectionExist(collectionList, 'knovator');
+        if (isCollectExist) {
+            let result = await dbResource.collection('knovator').find({}).toArray();
+    
+            response.data = result;
+            response.success = true,
+            response.status_code = 200,
+            response.message = "Transaction Success",
+            response.length = result.length
+        } else {
+            response.message = "Collection not exist !",
+            response.status_code = 101
+        }
+        res.send(response);
+    }
+    
